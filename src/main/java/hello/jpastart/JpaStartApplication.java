@@ -48,8 +48,7 @@ public class JpaStartApplication {
 //			}
 
 //			//멤버 수정
-//			findMember.setName("칙촉을 빈츠로");
-//			tx.commit();
+//
 
 		} catch (Exception e) {
 				tx.rollback(); // 예외 발생 시 롤백
