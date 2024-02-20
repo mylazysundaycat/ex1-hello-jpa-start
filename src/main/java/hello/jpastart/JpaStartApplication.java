@@ -11,11 +11,13 @@ import java.util.List;
 
 @SpringBootApplication
 public class JpaStartApplication {
-
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpainit");
 	public static void main(String[] args) {
-
 		SpringApplication.run(JpaStartApplication.class, args);
-
+		Member member = createMember(1L, "회원1");
+		member.setName("회원명변경");
+		mergeMember(member);
+		/*
 		//resources/META-INF/persistance.xml 에 있는 <persistence-unit name="jpainit"> 을
 		//가져온다
 		//엔티티 매니저 팩토리 생성
@@ -59,8 +61,55 @@ public class JpaStartApplication {
 		}
 
 		emf.close();
+		 */
 
+	}
 
+	/**
+	 * 영속성 컨텍스트1 시작
+	 * @param id
+	 * @param username
+	 * @return member
+	 */
+	static Member createMember(long id, String username) {
+		EntityManager em1 = emf.createEntityManager();
+		EntityTransaction tx1 = em1.getTransaction();
+		tx1.begin();
+
+		Member member = new Member();
+		member.setId(id);
+		member.setName(username);
+
+		em1.persist(member);
+		tx1.commit();
+
+		em1.close();
+
+		return member;
+	}
+
+	/**
+	 * 영속성 컨텍스트2 시작
+	 * @param member
+	 */
+	static void mergeMember(Member member) {
+		EntityManager em2 = emf.createEntityManager();
+		EntityTransaction tx2 = em2.getTransaction();
+
+		tx2.begin();
+		Member mergeMember = em2.merge(member);
+		tx2.commit();
+
+		//준영속 상태
+		System.out.println("member=" + member.getName());
+
+		//영속 상태
+		System.out.println("mergeMember= " + mergeMember.getName());
+
+		System.out.println("em2 contains member=" + em2.contains(member));
+		System.out.println("em2 contains mergeMember=" + em2.contains(mergeMember));
+
+		em2.close();
 	}
 
 }

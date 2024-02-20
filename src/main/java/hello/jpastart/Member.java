@@ -1,10 +1,10 @@
 package hello.jpastart;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 @Entity //테이블과 매핑한다고 JPA에게 알려주는 것
 @Getter
@@ -15,6 +15,19 @@ public class Member {
     private Long id;
     private String name;
     private int age;
+
+    //추가
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Lob
+    private String description;
 
     public Member(){
 
