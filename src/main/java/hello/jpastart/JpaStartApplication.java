@@ -16,13 +16,13 @@ public class JpaStartApplication {
 
 		SpringApplication.run(JpaStartApplication.class, args);
 
-//		 resources/META-INF/persistance.xml 에 있는 <persistence-unit name="jpainit"> 을
-//		 가져온다
+		//resources/META-INF/persistance.xml 에 있는 <persistence-unit name="jpainit"> 을
+		//가져온다
+		//엔티티 매니저 팩토리 생성
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpainit");
-
+		//엔티티 매니저 생성
 		EntityManager em = emf.createEntityManager();
-
-		//트랜잭션
+		//트랜잭션 획득
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 
@@ -48,7 +48,9 @@ public class JpaStartApplication {
 //			}
 
 //			//멤버 수정
-//
+
+			//멤버 삭제
+			//em.remove(member);
 
 		} catch (Exception e) {
 				tx.rollback(); // 예외 발생 시 롤백
@@ -56,7 +58,7 @@ public class JpaStartApplication {
 				em.close(); // EntityManager 닫기
 		}
 
-
+		emf.close();
 
 
 	}
