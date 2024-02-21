@@ -9,10 +9,18 @@ import java.util.Date;
 @Entity //테이블과 매핑한다고 JPA에게 알려주는 것
 @Getter
 @Setter
-@Table(name="MEMBER") //엔티티 클래스에 매핑할 테이블 정보를 알려준다
+//엔티티 클래스에 매핑할 테이블 정보를 알려준다
+@Table(name="MEMBER", uniqueConstraints={
+        @UniqueConstraint(
+                name="NAME_AGE_UNIQUE",
+                columnNames={"NAME","AGE"}
+        )
+})
 public class Member {
     @Id //엔티티클래스의 필드를 테이블의 기본키에 매핑한다
     private Long id;
+
+    @Column(name="NAME", nullable=false, length=10)
     private String name;
     private int age;
 
